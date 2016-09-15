@@ -1,0 +1,40 @@
+{
+  "name": "DataMapping",
+  "version": "0.1.0",
+  "author": "NYU MusEDlab",
+  "description": "",
+  "dependencies": {
+  },
+  "scripts": {
+    "gulp"             : "gulp",
+    "dev"              : "gulp dev",
+    "dev-deploy"       : "gulp dev-deploy",
+    "dev-deploy-local" : "gulp dev-deploy-local",
+    "test"             : "gulp test",
+    "prod"             : "gulp prod",
+    "clean"            : "gulp clean"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.9.6",
+    "browserify": "latest",
+    "del": "^1.1.1",
+    "express": "latest",
+    "gulp": "3.9.0",
+    "gulp-browserify": "latest",
+    "gulp-concat": "^2.6.0",
+    "gulp-env": "^0.2.0",
+    "gulp-notify": "latest",
+    "gulp-order": "^1.1.1",
+    "gulp-plumber": "latest",
+    "gulp-preprocess": "^2.0.0",
+    "gulp-rename": "latest",
+    "gulp-streamify": "^1.0.2",
+    "gulp-uglify": "^1.4.1",
+    "gulp-util": "^3.0.7",
+    "partialify": "latest",
+    "require-dir": "^0.3.0",
+    "serve-favicon": "latest",
+    "vinyl-source-stream": "latest",
+    "watchify": "latest"
+  }
+}
