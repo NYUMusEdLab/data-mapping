@@ -1,0 +1,9 @@
+.DS_Store
+.idea
+node_modules
+dist
+npm-debug.log
+secrets.yml
+
+# Optional REPL history
+.node_repl_history
