@@ -1,4 +1,5 @@
 var Util  = require('./Util');
+var Input = require('./Input');
 
 var DataMapping = function () {
     this.sections = {};
@@ -6,8 +7,33 @@ var DataMapping = function () {
 
 DataMapping.prototype = {
 
-    init: function(xData,yData,colors,lineSize,labels) {
-        this.xData = [
+    init: function() {
+        var dataURL = 'data/InputData.json';
+        var self = this;
+
+        return Util.get(dataURL).then(JSON.parse).then(
+            function (data) {
+                self.xData = data.xData;
+                self.yData = data.yData;
+
+                self.colors = data.colors;
+
+                self.lineSize = data.lineSize;
+
+                self.labels = data.labels;
+
+                self.drawInput();
+            },
+            function (error) {
+                console.log("Couldn't load " + dataURL + " because " + error);
+            }
+        );
+    },
+
+    /*xinit: function() {
+        this.loadInput();
+
+       this.xData = [
             [2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2013],
             [2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2013],
             [2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2013],
@@ -156,8 +182,144 @@ DataMapping.prototype = {
             this.layout.annotations.push(result, result2);
         }
         Plotly.newPlot('myDiv',this.data, this.layout);
+    },
+*/
+    drawInput: function(){
+        this.data = [];
+
+        for (var i = 0 ; i < this.xData.length ; i++ ) {
+            var result = {
+                x: this.xData[i],
+                y: this.yData[i],
+                type: 'scatter',
+                mode: 'lines',
+                line: {
+                    color: this.colors[i],
+                    width: this.lineSize[i]
+                }
+            };
+            var result2 = {
+                x: [this.xData[i][0], this.xData[i][11]],
+                y: [this.yData[i][0], this.yData[i][11]],
+                type: 'scatter',
+                mode: 'markers',
+                marker: {
+                    color: this.colors[i],
+                    size: 12
+                }
+            };
+            this.data.push(result, result2);
+        }
+
+        this.layout = {
+            showlegend: false,
+            height: 600,
+            width: 600,
+            xaxis: {
+                showline: true,
+                showgrid: false,
+                showticklabels: true,
+                linecolor: 'rgb(204,204,204)',
+                linewidth: 2,
+                autotick: false,
+                ticks: 'outside',
+                tickcolor: 'rgb(204,204,204)',
+                tickwidth: 2,
+                ticklen: 5,
+                tickfont: {
+                    family: 'Arial',
+                    size: 12,
+                    color: 'rgb(82, 82, 82)'
+                }
+            },
+            yaxis: {
+                showgrid: false,
+                zeroline: false,
+                showline: false,
+                showticklabels: false
+            },
+            autosize: false,
+            margin: {
+                autoexpand: false,
+                l: 100,
+                r: 20,
+                t: 100
+            },
+            annotations: [
+                {
+                    xref: 'paper',
+                    yref: 'paper',
+                    x: 0.0,
+                    y: 1.05,
+                    xanchor: 'left',
+                    yanchor: 'bottom',
+                    text: 'Main Source for News',
+                    font:{
+                        family: 'Arial',
+                        size: 30,
+                        color: 'rgb(37,37,37)'
+                    },
+                    showarrow: false
+                },
+                {
+                    xref: 'paper',
+                    yref: 'paper',
+                    x: 0.5,
+                    y: -0.1,
+                    xanchor: 'center',
+                    yanchor: 'top',
+                    text: 'Source: Pew Research Center & Storytelling with data',
+                    showarrow: false,
+                    font: {
+                        family: 'Arial',
+                        size: 12,
+                        color: 'rgb(150,150,150)'
+                    }
+                }
+            ]
+        };
+
+
+        for (var i = 0 ; i < this.xData.length ; i++ ) {
+            var result = {
+                xref: 'paper',
+                x: 0.05,
+                y: this.yData[i][0],
+                xanchor: 'right',
+                yanchor: 'middle',
+                text: this.labels[i] + ' ' + this.yData[i][0] +'%',
+                showarrow: false,
+                font: {
+                    family: 'Arial',
+                    size: 16,
+                    color: 'black'
+                }
+            };
+            var result2 = {
+                xref: 'paper',
+                x: 0.95,
+                y: this.yData[i][11],
+                xanchor: 'left',
+                yanchor: 'middle',
+                text: this.yData[i][11] +'%',
+                font: {
+                    family: 'Arial',
+                    size: 16,
+                    color: 'black'
+                },
+                showarrow: false
+            };
+            this.layout.annotations.push(result, result2);
+        }
+        Plotly.newPlot('myDiv',this.data, this.layout);
+
+    },
+
+    initInput: function() {
+        for(var inputName in this.input) {
+            var input = new Input(this.input[inputName]);
+        }
     }
 };
 
 module.exports = DataMapping;
-
