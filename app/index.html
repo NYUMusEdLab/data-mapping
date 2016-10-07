@@ -1,12 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
     <title>Title</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCoBJNtW_JC6PX0pvYHTxf0c4SJGKQMxKU">
+    </script>
+    <script type="text/javascript"
+            src="https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyCoBJNtW_JC6PX0pvYHTxf0c4SJGKQMxKU">
+    </script>
+    <script type="text/javascript">
+        var watchID;
+        var geo;    // for the geolocation object
+        var map;
+        var service;
+        var bounds = new google.maps.LatLngBounds();
+
+        function handleSearchResults(results){
+            console.log(results);
+
+            for(var i=0; i<results.length; i++){
+                var marker = new google.maps.Marker({
+                    position: results[i].geometry.location,
+                    map: map,
+                    icon:results[i].icon
+                });
+            }
+        }
+
+        function performSearch()
+        {
+            var request= {
+                //bounds: map.getBounds(),
+                //name: "McDonald's"
+            };
+            service.nearbySearch(request, handleSearchResults);
+        }
+
+
+        function initialise(location) {
+
+
+            console.log(location);
+
+            // Get Latitude and Longitude
+            var latitude = location.coords.latitude;
+            var longitude = location.coords.longitude;
+            var currentLocation = new google.maps.LatLng(latitude,longitude);
+
+            // Set up Google Maps
+            var mapOptions = {
+                //center: currentLocation,
+                //zoom: 8,
+                mapTypeId:google.maps.MapTypeId.ROADMAP
+            };
+
+            map = new google.maps.Map(document.getElementById('map-canvas'),
+                    mapOptions);
+            map.setTilt(0);
+
+            // Set Markers
+            /*var marker = new google.maps.Marker({
+                position: currentLocation,
+                map: map,
+                title: 'Click me'
+            });
+            marker.setMap(map);*/
+
+            //Information window of marker location
+            var infowindow = new google.maps.InfoWindow, marker, i;
+            //({
+                //location: currentLocation
+            //});
+
+            // Multiple Markers
+            var markers = [
+                ['London Eye, London', 51.503454,-0.119562],
+                ['Palace of Westminster, London', 51.499633,-0.124755]
+            ];
+
+            // Loop through our array of markers & place each one on the map
+            for( i = 0; i < markers.length; i++ ) {
+                var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
+                bounds.extend(position);
+                marker = new google.maps.Marker({
+                    position: position,
+                    map: map,
+                    title: markers[i][0]
+                });
+
+                // Allow each marker to have an info window
+                google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                    return function() {
+                        infowindow.setContent(infoWindowContent[i][0]);
+                        infowindow.open(map, marker);
+                    }
+                })(marker, i));
+
+                // Automatically center the map fitting all markers on the screen
+                map.fitBounds(bounds);
+            }
+
+            google.maps.event.addListener(marker, 'click', function () {
+                // Calling the open method of the infoWindow
+                infowindow.open(map, marker);
+            });
+
+            // To find places nearby
+            service = new google.maps.places.PlacesService(map);
+
+            //wait for bounds
+            google.maps.event.addListenerOnce(map, "bounds_changed", performSearch);
+
+            //redo search when refresh clicked
+            $('#refresh').click(performSearch);
+
+            //draw circle on area
+            var circleOptions = {
+                strokeColor: "#0000FF",
+                strokeOpacity: 0.8,
+                strokeWeight: 1.5,
+                fillColor: "#0000FF",
+                fillOpacity: 0.11,
+                map: map,
+                //center: ,
+                radius: 200
+            };
+            circle = new google.maps.Circle(circleOptions);
+        }
+
+        $(document).ready(function()
+                {
+                    var optn = {
+                        enableHighAccuracy : true,
+                        timeout            : 600,
+                        maximumAge         : 0
+
+                    };
+                    navigator.geolocation.getCurrentPosition(initialise);
+                }
+        );
+    </script>
 </head>
 <body>
-    <div id="myDiv" style="width:600px;height:250px;">
-    </div>
+<div id="block_container">
+    <div class = "myDiv" id = "myDiv">></div>
+    <div class = "myDiv" id = "myDiv2"></div>
+    <div class = "myDiv" id = "myDiv3"></div>
+</div>
+    <div id = "map-canvas"></div>
+    <button id="refresh">Refresh</button>
     <script language="javascript" type="text/javascript" src="js/dm.js"></script>
 </body>
 </html>

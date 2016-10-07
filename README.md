@@ -16,6 +16,11 @@ Install Gulp:
 sudo npm install -g gulp
 ```
 
+###Install Google-Maps
+```sh
+npm install google-maps
+```
+
 ### Initial build, and when updating or editing
 ```sh
 sudo npm install

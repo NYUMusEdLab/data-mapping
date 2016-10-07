@@ -24,9 +24,15 @@ window.onload = function () {
 
     // NOTE: these options are based upon urlOptions, but not necessarily a one-to-one mapping. Additional options
     // may not be URL-configurable (e.g. assetBase) or may benefit from slightly different form (e.g. multiLock)
-    DM.init({
+    DM.initLine({
          sourceSlug : options.sourceSlug
      });
+    DM.initScatter({
+        sourceSlug : options.sourceSlug
+    });
+    DM.initMap({
+        sourceSlug : options.sourceSlug
+    });
 
     console.log('ready');
 };
