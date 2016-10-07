@@ -4,15 +4,16 @@
   "author": "NYU MusEDlab",
   "description": "",
   "dependencies": {
+    "google-maps": "^3.2.1"
   },
   "scripts": {
-    "gulp"             : "gulp",
-    "dev"              : "gulp dev",
-    "dev-deploy"       : "gulp dev-deploy",
-    "dev-deploy-local" : "gulp dev-deploy-local",
-    "test"             : "gulp test",
-    "prod"             : "gulp prod",
-    "clean"            : "gulp clean"
+    "gulp": "gulp",
+    "dev": "gulp dev",
+    "dev-deploy": "gulp dev-deploy",
+    "dev-deploy-local": "gulp dev-deploy-local",
+    "test": "gulp test",
+    "prod": "gulp prod",
+    "clean": "gulp clean"
   },
   "devDependencies": {
     "browser-sync": "^2.9.6",
