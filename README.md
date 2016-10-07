@@ -1,6 +1,6 @@
-# Variation Generator
+# Data Mapping
 
-[![Build Status](https://buildbot.musedlab.org/api/badges/NYUMusEdLab/variation-generator/status.svg)](https://buildbot.musedlab.org/NYUMusEdLab/variation-generator)
+[![Build Status](https://buildbot.musedlab.org/api/badges/NYUMusEdLab/dta-mapping/status.svg)](https://buildbot.musedlab.org/NYUMusEdLab/data-mapping)
 
 ## Usage
 
@@ -16,12 +16,12 @@ Install Gulp:
 sudo npm install -g gulp
 ```
 
-###Install Google-Maps
-```sh
-npm install google-maps
-```
-
 ### Initial build, and when updating or editing
+NOTE: The build process creates and makes use of two directories which are not part of the repo: node_modules and dist.
+While these are already included in .gitignore, if you are using an IDE or editor (e.g. WebStorm) which scans the entire project in order
+to provide project-wide search, auto-complete or refactoring, you may want to exclude these directories to improve performance. To
+avoid the you create these directories initially
+
 ```sh
 sudo npm install
 npm run dev
